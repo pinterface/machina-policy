@@ -1,0 +1,63 @@
+#+TITLE: Common Lisp robots.txt Parser
+* Goals
+The goal of this project is simple: provide a parser for robots.txt files,
+without specifying any particular HTTP client for fetching URLs.  To make it
+very easy to query a robots.txt file for information on whether a particular bot
+is allowed to access a particular URL.
+
+Accordingly, it is somewhat smaller in scope than [[http://www.cliki.net/cl-web-crawler][cl-web-crawler]]: it does
+robots.txt files /only/.
+* Features
+robots.txt supports the following basic elements of robots.txt files:
+ * Allow: lines
+ * Disallow: lines
+ * URL globbing (like Googlebot: * is a wildcard, $ is a terminating anchor)
+ * Crawl-delay (actually obeying crawl-delay is up to you)
+ * Defaulting to User-agent: * if specific user-agent not found
+* Usage
+#+BEGIN_SRC lisp
+  (let ((robots-policy (agent-policy (http-get "http://example.com/robots.txt") "myawesomebot")))
+    (dolist (uri uris)
+      (when (uri-allowed-p robots-policy uri)
+        (process-uri uri))))
+#+END_SRC
+* Functions
+** parse-robots.txt robots.txt &optional agent
+ * robots.txt :: A file, string, or stream representing a robots.txt file
+ * agent :: The identifying string expected to be found in the robots.txt file
+            to specify your specific bot
+
+Parses a given ROBOTS.TXT.  If the optional AGENT-STRING is specified, ignores
+anything not applicable to AGENT-STRING.
+
+This function is most useful if you want to query a particular robots.txt file
+about the access rights of other bots, as well as your own.  Because you
+generally only care about the policy for one particular agent, and
+because #'AGENT-POLICY also accepts files, strings, and streams as its
+ROBOTS.TXT argument, you should in general not need this function, instead
+skipping directly to #'AGENT-POLICY.
+** agent-policy robots.txt agent
+ * robots.txt :: A file, string, or stream representing a robots.txt file, or an
+                 object of class ROBOTS.TXT which represents an already-parsed
+                 file
+ * agent :: The identifying string expected to be found in the robots.txt file
+            to specify your specific bot
+
+Returns the policy applicable to AGENT as specified by the given ROBOTS.TXT.  As
+a second value, returns T if the policy applies to the given agent specifically,
+or NIL if the policy returned was the wildcard policy (*).
+
+This is the primary method of obtaining the set of policies relevant to your
+bot.
+** uri-allowed-p policy uri
+ * policy :: The policy which applies to your bot, as returned by #'AGENT-POLICY
+ * uri :: A string or PURI:URI object representing the URI in question
+
+Returns a generalized boolean indicating whether access to the URI is allowed
+under the provided POLICY.  Defaults to true.
+** crawl-delay policy
+ * policy :: The policy which applies to your bot, as returned by #'AGENT-POLICY
+
+Returns an integer representing the number of seconds to wait between page
+fetches.  Actually obeying this directive is left to the discretion of the bot
+programmer.
