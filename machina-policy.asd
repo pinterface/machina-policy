@@ -1,4 +1,4 @@
-(asdf:defsystem #:robots.txt
+(asdf:defsystem #:machina-policy
   :version "0"
   :description "Parser for robots.txt files"
   :author "pinterface <pix@kepibu.org>"

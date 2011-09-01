@@ -1,4 +1,4 @@
-(defpackage #:robots.txt
+(defpackage #:machina-policy
   (:use #:cl)
   (:import-from #:alexandria #:rcurry)
   (:import-from #:cl-ppcre

@@ -5,7 +5,7 @@
 ;;;; 
 ;;;; [1] http://www.robotstxt.org/norobots-rfc.txt
 
-(in-package #:robots.txt)
+(in-package #:machina-policy)
 
 (defgeneric parse (thing)
   (:method ((string string)) (with-input-from-string (stream string) (parse-stream stream)))

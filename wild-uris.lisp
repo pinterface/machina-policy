@@ -1,4 +1,4 @@
-(in-package #:robots.txt)
+(in-package #:machina-policy)
 
 (defun last-char-= (char string)
   (char= char (char string (1- (length string)))))

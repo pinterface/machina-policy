@@ -1,4 +1,4 @@
-(in-package #:robots.txt)
+(in-package #:machina-policy)
 
 (defclass robots.txt ()
   ((default-policy :accessor %default-policy :initarg :default-rules)

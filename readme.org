@@ -1,4 +1,4 @@
-#+TITLE: Common Lisp robots.txt Parser
+#+TITLE: machina-policy: A Common Lisp robots.txt Parser
 * Goals
 The goal of this project is simple: provide a parser for robots.txt files,
 without specifying any particular HTTP client for fetching URLs.  To make it
@@ -8,7 +8,7 @@ is allowed to access a particular URL.
 Accordingly, it is somewhat smaller in scope than [[http://www.cliki.net/cl-web-crawler][cl-web-crawler]]: it does
 robots.txt files /only/.
 * Features
-robots.txt supports the following basic elements of robots.txt files:
+machina-policy supports the following basic elements of robots.txt files:
  * Allow: lines
  * Disallow: lines
  * URL globbing (like Googlebot: * is a wildcard, $ is a terminating anchor)
